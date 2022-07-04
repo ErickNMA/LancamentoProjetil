@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import time
 import math as m
 from tkinter import *
+from tkinter import messagebox
 
 
 
@@ -38,7 +39,8 @@ def time_sim():
         print(x, y)
     print('\n=> Alcance: \t' + str(round(alcance, 4)) + ' m')
     print('\n=> Altura maxima: \t' + str(round(alt_max, 4)) + ' m')
-    print('\n=> Tempo de trajetoria: \t' + str(round(t_voo, 4)) + ' s') 
+    print('\n=> Tempo de trajetoria: \t' + str(round(t_voo, 4)) + ' s')
+    messagebox.showinfo(message='Valor de ângulo inválido!') 
 
 def traj_plot():
     plt.plot(ex, ey)
@@ -54,12 +56,26 @@ main_window.geometry('%dx%d+%d+%d' % (screen_w, screen_h, 0, 0))
 main_window.resizable(False, False)
 main_window.state('zoomed')
 main_window.iconbitmap('logo.ico')
-main_window['bg'] = 'gray'
+main_window['bg'] = '#444445'
 
-btn1 = Button(main_window, text='Iniciar Simulação', command=time_sim)
-btn1.pack()
+btn1 = Button(main_window, text='Iniciar Simulação', command=time_sim, font='Impact 14', fg='#ffffff', bg='#9d9d9e')
+btn1.grid(row=1, column=0)
 btn2 = Button(main_window, text='Gráfico', command=traj_plot)
-btn2.pack()
+btn2.grid(row=2, column=0)
+
+t1 = StringVar()
+t1.set(('Aceleração em m/s'+'\u00B2'))
+
+l1 = Label(main_window, textvariable=t1, width=20, height=2, anchor=CENTER, justify=CENTER, font='Impact 14', fg='#000000', bg='#ffffff', bd=3, relief='sunken')
+l1.grid(row=0, column=0)
+
+e1 = Entry(main_window)
+e1.grid(row=3, column=0)
+
+s1 = Scale(main_window, from_=0, to=90, orient=HORIZONTAL, resolution=0.1)
+print(s1.keys())
+s1.grid(row=4, column=0)
+
 
 
 main_window.mainloop()

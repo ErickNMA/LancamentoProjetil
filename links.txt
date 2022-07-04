@@ -1,0 +1,11 @@
+Cores em hexa:
+https://g.co/kgs/qBqNRp
+
+Fontes comuns e nativas:
+https://templateria.com.br/blog/templates/tipografia-email-marketing/
+
+Tk documentation:
+http://tkdocs.com/tutorial/index.html
+
+Tabela unicode utf-8:
+https://unicode-table.com/pt/#00DE
