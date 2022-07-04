@@ -9,3 +9,6 @@ http://tkdocs.com/tutorial/index.html
 
 Tabela unicode utf-8:
 https://unicode-table.com/pt/#00DE
+
+Redimensionar foto:
+https://pixlr.com/br/x/

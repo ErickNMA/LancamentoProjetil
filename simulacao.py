@@ -3,6 +3,8 @@ import time
 import math as m
 from tkinter import *
 from tkinter import messagebox
+import numpy as np
+import cv2 as cv
 
 
 
@@ -21,6 +23,9 @@ ex = []
 ey = []
 
 def time_sim():
+    et.clear()
+    ex.clear()
+    ey.clear()
     t0 = time.time()
     alt_max = -1
     while(True):
@@ -59,22 +64,36 @@ main_window.iconbitmap('logo.ico')
 main_window['bg'] = '#444445'
 
 btn1 = Button(main_window, text='Iniciar Simulação', command=time_sim, font='Impact 14', fg='#ffffff', bg='#9d9d9e')
-btn1.grid(row=1, column=0)
+#btn1.grid(row=1, column=0)
 btn2 = Button(main_window, text='Gráfico', command=traj_plot)
-btn2.grid(row=2, column=0)
+#btn2.grid(row=2, column=0)
 
 t1 = StringVar()
 t1.set(('Aceleração em m/s'+'\u00B2'))
 
 l1 = Label(main_window, textvariable=t1, width=20, height=2, anchor=CENTER, justify=CENTER, font='Impact 14', fg='#000000', bg='#ffffff', bd=3, relief='sunken')
-l1.grid(row=0, column=0)
+#l1.grid(row=0, column=0)
 
 e1 = Entry(main_window)
-e1.grid(row=3, column=0)
+#e1.grid(row=3, column=0)
 
-s1 = Scale(main_window, from_=0, to=90, orient=HORIZONTAL, resolution=0.1)
-print(s1.keys())
-s1.grid(row=4, column=0)
+s1_val = IntVar()
+s1 = Scale(main_window, from_=0, to=90, orient=HORIZONTAL, resolution=0.1, variable=s1_val)
+#s1.grid(row=4, column=0)
+
+ck1_val = IntVar()
+ck1 = Checkbutton(main_window, text='Checkbox Exemplo', variable=ck1_val)
+#ck1.grid(row=5, column=0)
+
+array = (np.ones((screen_h, screen_w, 3), dtype=np.float32)*255)
+
+
+cv.imshow('Imagem', array)
+cv.waitKey()
+
+#img1 = PhotoImage(file=array)
+#lim1 = Label(main_window, image=array)
+#lim1.grid(row=0, column=0)
 
 
 
