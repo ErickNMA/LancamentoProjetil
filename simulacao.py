@@ -10,7 +10,7 @@ import copy
 
 
 v = 10.0
-ang = 40.0
+ang = 45.0
 dist = 0.25
 g = 9.807
 
@@ -31,7 +31,8 @@ def rt_sim():
     rt_x.clear()
     rt_y.clear()
     t0 = time.time()
-    rt_ymax = -1
+    rt_ymax = 0
+    rt_x_ymax = x0
     rt_tvoo = -1
     rt_tsub = -1
 
@@ -44,15 +45,21 @@ def rt_sim():
     if((k * calc_ymax) > (screen_h-(2*y_space))):
         k = ((screen_h-(2*y_space)) / calc_ymax)
     
-   
+    dx_vet = int(50/(m.sqrt(1+m.tan(ang*(m.pi/180.0)))))
+    dy_vet = int(50/(m.sqrt(1+(1.0/m.tan(ang*(m.pi/180.0))))))
+    
+    
+    #Fixar problemas de largura da área de simulação e detalhes nos cálculos, passando detalhes, faltando detalhes...
 
 
     while(True):
         current_frame = copy.deepcopy(array)
         t = (time.time()-t0)
 
-        cv.rectangle(current_frame, ((int((screen_w*6.7)/8.0)-10), (int((screen_h*0.5)/8.0))-35), ((int((screen_w*6.7)/8.0)+270), (int((screen_h*0.5)/8.0))+20), (0, 0, 0), 2)
-        cv.putText(current_frame, ('Tempo: ' + str(round(t, 2)) + 's'), (int((screen_w*6.7)/8.0), int((screen_h*0.5)/8.0)), cv.QT_FONT_NORMAL, 1, (0, 0, 0), 1)
+        cv.rectangle(current_frame, ((int((screen_w*6.4)/8.0)-10), (int((screen_h*0.5)/8.0))-35), ((int((screen_w*6.4)/8.0)+270), (int((screen_h*0.5)/8.0))+20), (0, 0, 0), 2)
+        cv.putText(current_frame, ('Tempo: ' + str(round(t, 2)) + 's'), (int((screen_w*6.4)/8.0), int((screen_h*0.5)/8.0)), cv.QT_FONT_NORMAL, 1, (0, 0, 0), 1)
+        #Ver direção da seta...
+        #current_frame = cv.arrowedLine(current_frame, (int(x_space+(k*x0)), int(screen_h-y_space-(k*y0))), (int((x_space+(k*x0))+dx_vet), int((screen_h-y_space-(k*y0))-dy_vet)), (0, 100, 255), 3)
 
         rt_t.append(t)
         x = (x0 + (vx*t))
@@ -60,12 +67,26 @@ def rt_sim():
         y = (y0 + (vy*t) - ((g*m.pow(t, 2))/2.0))
         rt_y.append(y)
 
-        cv.circle(current_frame, (int(x_space+(k*x)), int((screen_h-y_space)-(k*y))), 5, (0, 0, 255), -1)
+        current_vy = (vy - (g*t))
+        current_angle = ((m.atan(current_vy/vx)/m.pi)*180.0)
+        print(current_angle)
+
+        cv.line(current_frame, (int(x_space+(k*x0)), int(screen_h-y_space)), (int(x_space+(k*x0)), int((screen_h-y_space)+50)), (0, 0, 0), 3)
+        current_frame = cv.arrowedLine(current_frame, (int(x_space+(k*x0)), int((screen_h-y_space)+25)), (int(x_space+(k*x)), int((screen_h-y_space)+25)), (0, 0, 0), 3, 1)
+
+        cv.line(current_frame, (int((x_space+(k*rt_x_ymax))-25), int(screen_h-y_space)), (int((x_space+(k*rt_x_ymax))+25), int(screen_h-y_space)), (0, 0, 0), 3)
+        current_frame = cv.arrowedLine(current_frame, (int(x_space+(k*rt_x_ymax)), int(screen_h-y_space)), (int(x_space+(k*rt_x_ymax)), int(screen_h-(k*rt_ymax))), (0, 0, 0), 3, 1)
+
+        cv.circle(array, (int(x_space+(k*x)), int((screen_h-y_space)-(k*y))), 5, (0, 0, 255), -1)
+        cv.circle(current_frame, (int(x_space+(k*x)), int((screen_h-y_space)-(k*y))), 10, (255, 0, 0), -1)
+        
+        cv.imshow('Imagem', array)
         cv.imshow('Imagem', current_frame)
         cv.waitKey(1)
 
         if(y > rt_ymax):
             rt_ymax = y
+            rt_x_ymax = x
             rt_tsub = t
         if(y < 0):
             rt_alc = (x + x0)
@@ -118,8 +139,6 @@ btn1 = Button(main_window, text='Iniciar Simulação', command=rt_sim, font='Imp
 btn1.grid(row=1, column=0)
 btn2 = Button(main_window, text='Gráfico', command=rt_plot)
 btn2.grid(row=2, column=0)
-
-print(btn1.keys())
 
 t1 = StringVar()
 t1.set(('Aceleração em m/s'+'\u00B2'))
