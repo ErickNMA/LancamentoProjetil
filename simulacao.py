@@ -3,6 +3,7 @@ import time
 import math as m
 from tkinter import *
 from tkinter import messagebox
+from tkinter.filedialog import asksaveasfile
 import numpy as np
 import cv2 as cv
 import copy
@@ -136,15 +137,26 @@ def rt_sim():
     t4.set('Alcance: \t' + str(round(rt_alc, 2)) + 'm')
     t6.set('Altura: \t' + str(round(rt_ymax, 2)) + 'm')
 
+    #mix_img(array, current_frame)
+
     return 0
 
 def plotagem():
     if(len(rt_t) > 1):
         if(ra_val.get() == 1):
+            plt.title('Lançamento Oblíquo: V = ' + str(v) + 'm/s e ângulo de ' + str(ang) + ' graus')
+            plt.xlabel('Tempo (s)')
+            plt.ylabel('x (m)')
             plt.plot(rt_t, rt_x)
         elif(ra_val.get() == 2):
+            plt.title('Lançamento Oblíquo: V = ' + str(v) + 'm/s e ângulo de ' + str(ang) + ' graus')
+            plt.xlabel('Tempo (s)')
+            plt.ylabel('y (m)')
             plt.plot(rt_t, rt_y)
         elif(ra_val.get() == 3):
+            plt.title('Lançamento Oblíquo: V = ' + str(v) + 'm/s e ângulo de ' + str(ang) + ' graus')
+            plt.xlabel('x (m)')
+            plt.ylabel('y (m)')
             plt.plot(rt_x, rt_y)
         plt.show()
     else:
@@ -192,6 +204,15 @@ def calc():
 
     return 0
     
+#def mix_img(im1, im2):
+    #out = (np.ones((screen_h, screen_w, 3), dtype=np.float32)*255)
+    #for i in range(len(im1)):
+        #for j in range(len(im1[0])):
+            #if((im1[i][j][0] != 255) or (im1[i][j][1] != 255) or (im1[i][j][2] != 255)):
+                #out[i][j] = im1[i][j]
+            #if((im2[i][j][0] != 255) or (im2[i][j][1] != 255) or (im2[i][j][2] != 255)):
+                #out[i][j] = im2[i][j]
+    #rt_img = copy.deepcopy(out)
 
 #def grav():
 #    if(ck1_val.get()):
@@ -218,19 +239,19 @@ main_window['bg'] = '#444445'
 
 #label1.place(x=0, y=0)
 
-space = 10
+space = 5
 
 #Linha 0:
 #Espaçador:
-Label(main_window, width=45, height=1, bg='#444445').grid(row=0, column=0)
-Label(main_window, width=22, height=10, bg='#444445').grid(row=0, column=8)
+Label(main_window, width=17, height=8, bg='#444445').grid(row=0, column=0)
+Label(main_window, width=17, height=8, bg='#444445').grid(row=0, column=8)
 
 #Linha 1:
 Label(main_window, text='Parâmetros:', font='Impact 20', fg='#000000', bg='#444445').grid(row=1, column=4, padx=space, pady=space)
 
 #Linha 2:
 Label(main_window, text='Velocidade: (m/s)', font='Impact 14', fg='#000000', bg='#444445').grid(row=2, column=3, padx=space, pady=space)
-Label(main_window, text=('Ângulo: ' + '\u00B0'), font='Impact 14', fg='#000000', bg='#444445').grid(row=2, column=4, padx=space, pady=space)
+Label(main_window, text=('Ângulo: (' + '\u00B0' + ')'), font='Impact 14', fg='#000000', bg='#444445').grid(row=2, column=4, padx=space, pady=space)
 Label(main_window, text=('Gravidade: (m/s' + '\u00B2' + ')'), font='Impact 14', fg='#000000', bg='#444445').grid(row=2, column=5, padx=space, pady=space)
 
 #Linha 3:
@@ -310,17 +331,12 @@ l6.grid(row=9, column=7, padx=space, pady=space)
 btn2 = Button(main_window, text='Plotar', command=plotagem, font='Impact 14', fg='#ffffff', bg='#9d9d9e')
 btn2.grid(row=10, column=4, padx=space, pady=space)
 
+	
+#asksaveasfile(mode='w', **options)
 
 
 
-
-Label(main_window, width=10, height=10, bg='#444445').grid(row=1, column=5)
-
-
-
-
-
-
+#Label(main_window, width=10, height=10, bg='#444445').grid(row=1, column=5)
 
 
 
